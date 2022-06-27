@@ -14,15 +14,15 @@ public class UserService : MonoBehaviour
         Server.onAccountAction = OnAccountAction;
     }
 
-    void OnAccountAction(ServerModule.AccountManagerResponse response, ServerModule.DataStatus data, string username, string password)
+    void OnAccountAction(Module.AccountManagerResponse response, Module.DataStatus data, string username, string password)
     {
         // If user has successfully logged in, start activity-updater loop.
-        if(response == ServerModule.AccountManagerResponse.LOGGED_IN)
+        if(response == Module.AccountManagerResponse.LOGGED_IN)
         {
             StartCoroutine(UpdaterLoop());
         }
         // Stop updater, when user logs out.
-        else if(response == ServerModule.AccountManagerResponse.LOGGED_OUT)
+        else if(response == Module.AccountManagerResponse.LOGGED_OUT)
         {
             StopCoroutine(UpdaterLoop());
         }
