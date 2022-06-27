@@ -1,24 +1,48 @@
 ﻿using UnityEngine;
 
-public class SandboxManager : MonoBehaviour
+public class SandboxManager : EASU
 {
-    public Socket socket;
+    string username = "bwilk315";
+    string password = "315315";
+
     void Awake()
     {
         Application.targetFrameRate = 300;
-        Server.onConnect = OnConnect;
-        socket = new Socket("dpy6ft.camdvr.org", 8000); // Server address and http service port (for me it's 8000).
-        StartCoroutine(Server.Connect(socket));         // Try to connect to the server with socket made above.
+        Connect(new Socket("dpy6ft.camdvr.org", 8000));
     }
-    public void OnConnect(string error)
+    void Update()
+    {
+        if (localUser.loggedIn && Input.GetKeyDown(KeyCode.Q))
+            LogOut();
+    }
+    public override void OnConnect(string error)
     {
         if(error == null)
         {
-            Debug.LogFormat("Connected to '{0}' successfuly!", Server.socket);
+            Debug.LogFormat("Connected to '{0}' successfuly!", socket);
+            LogIn(username, password);
         }
         else
         {
             Debug.Log(error);
+        }
+    }
+    public override void OnAccountAction(Module.AccountManagerResponse amr, Module.DataStatus data, string username, string password)
+    {
+        if(amr == Module.AccountManagerResponse.LOGGED_IN)
+        {
+            Debug.LogFormat("User {0} successfuly logged in with password {1}!", username, password);
+        }
+        else if(amr == Module.AccountManagerResponse.LOGGED_OUT)
+        {
+            Debug.LogFormat("User {0} logged out!", username);
+        }
+    }
+    public override void OnActivityReport(Module.ActivityUpdaterResponse aur, Module.DataStatus data)
+    {
+        if(aur == Module.ActivityUpdaterResponse.UPDATED)
+        {
+            Debug.Log("Reported activity successfuly!");
         }
     }
 }

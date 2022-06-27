@@ -1,0 +1,12 @@
+{
+	"local": {
+		"db-access.php": "Provides functionality for working with database",
+		"server.json": "Server configuration file",
+		"structure.json": "Server structure description"
+	},
+	"chk-structure.php": "Checks if server structure matches 'structure.json' file",
+	"sync.php": "Synchronizes client clock with server's",
+	"log-in.php": "Logs user account in (creates new connection)",
+	"log-out.php": "Logs user account out (deletes account connection)",
+	"upt-activity.php": "Resets the value of last time device reported account activity"
+}
