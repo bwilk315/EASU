@@ -1,10 +1,10 @@
 {
-	"dbtype": "mysql",
-	"dbhost": "127.0.0.1",
-	"dbname": "easu",
-	"dbuser": "easu-manager",
-	"dbpass": "zaq1@WSX",
-	"usertabname": "users",
-	"conntabname": "connections",
-	"updateinterval": "1000"
+	"dbType": 				"mysql",
+	"dbHost": 				"127.0.0.1",
+	"dbName": 				"easu",
+	"dbUser": 				"easu-manager",
+	"dbPass": 				"zaq1@WSX",
+	"usersTableName": 		"users",
+	"sessionsTableName":	"sessions",
+	"updateInterval":		"1000"
 }

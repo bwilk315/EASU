@@ -1,36 +1,39 @@
 <?php
-    /*
-    CHK-STRUCT.PHP:
-    Returns true if the server has proper structure.
-    */
-    $good = 1;
-    if(file_exists("local/structure.json")) {
-        // Check if local structure file is the same as original, by comparing it
-        // with file located in trusted server. If not, replace it ...
-        $struFile = fopen("local/structure.json", "r");
-        $stru = json_decode(fread($struFile, filesize("local/structure.json")));
-        foreach($stru as $file => $desc) {
-            if($file == "local") {
+    require 'local/db-access.php';
+    // Variable used for determining (on finish) if the structure is valid.
+    $good                   = 1;
+    if(file_exists($structureFile)) {
+        // Decode structure file from JSON format to associative array.
+        $file               = fopen($structureFile, 'r');
+        $content            = fread($file, filesize($structureFile));
+        $structure          = json_decode($content, associative: true);
+        // Check files existence, for now omit 'local' catalog.
+        foreach($structure as $file => $version) {
+            if($file == 'local') {
                 continue;
             } elseif(file_exists($file)) {
                 continue;
             } else {
-                $good = 0;
+                // If file required in root directory is missing report error.
+                $good       = 0;
                 break;
             }
         }
+        // If all required files in the root directory exists, check 'local' folder.
         if($good == 1) {
-            foreach($stru->local as $file => $desc) {
-                if(file_exists("local/" . $file)) {
+            foreach($structure['local'] as $file => $version) {
+                if(file_exists("local/$file")) {
                     continue;
                 } else {
-                    $good = 0;
+                    // If file required in 'local' directory is missing report error.
+                    $good   = 0;
                     break;
                 }
             }
         }
     } else {
-        $good = 0;
+        // If structure file doesn't exist report error.
+        $good               = 0;
     }
     echo $good;
 ?>

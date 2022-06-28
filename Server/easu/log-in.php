@@ -1,53 +1,47 @@
 <?php
-	/*
-		LOGIN.PHP:
-		Inserts new connection if user provided correct data (username and password).
-		Handles any error which can occurr during the log-in process.
-	*/
 	require 'local/db-access.php';
-
-	$username = $_GET['username'];
-	$password = $_GET['password'];
-	// Get data record of user called 'username'.
+	$userName = $_POST['userName'];
+	$password = $_POST['password'];
+	// Get data record of user called 'userName'.
 	$userQuery = $database->select(
-		$usertab,				// TABLE
+		$tabUsers,				// TABLE
 		['id', 'password'],		// COLUMNS
-		['name' => $username]	// WHERE
+		['name' => $userName]	// WHERE
 	);
-
-	if(count($userQuery) > 0) {
-		// Get first (it should be the only one) record data.
-		$userData = $userQuery[0];
+	if($userQuery) {
+		$userData = $userQuery[0]; // Get first (it should be the only one) record data.
 		// Compare 'password' (provided by user) with password found in the database.
 		if($password == $userData['password']) {
 			$currentTime = time();
 			// Get information if user with the data provided is not already logged in.
-			$connQuery = $database->select(
-				$conntab,						// TABLE
+			$sessionQuery = $database->select(
+				$tabSessions,					// TABLE
 				['last_activity'],				// COLUMNS
 				['user_id' => $userData['id']]	// WHERE
 			);
-			if(count($connQuery) > 0) {
+			if($sessionQuery) {
 				// Get current connection data array.
-				$connData = $connQuery[0];
+				$sessionData = $sessionQuery[0];
 				// Time after which account will be free (it is normally dynamically updated).
-				$connTimeLimit = (int)$connData['last_activity'] + constant('UPDATE_INTERVAL');
+				$sessionTimeLimit = (int)$sessionData['last_activity'] + $updateInterval;
 				// If time after last activity update is greater than update interval, account is free.
-				if($currentTime > $connTimeLimit) {
-					$database->delete($conntab, [
+				if($currentTime > $sessionTimeLimit) {
+					$database->delete($tabSessions, [
 						'user_id' => $userData['id']
 					]);
-					echo constant('AMR_USER_LOGGED_OUT');
+					include $_SERVER['DOCUMENT_ROOT'] . '/easu/log-in.php';
 				}
 				/* 	If current time is not greater than a connection time limit, user has lenghten
 				 	lease by update-interval.
 				 */
-				else echo constant('AMR_ALREADY_LOGGED_IN');
+				else {
+					echo $amrAlreadyLoggedIn;
+				}
 			}
 			// If connection is not found, create a one.
 			else {
 				$database->insert(
-					$conntab,										// TABLE
+					$tabSessions,									// TABLE
 					[												// VALUES
 						'user_id' 			=> $userData['id'],
 						'port' 				=> $_SERVER['SERVER_PORT'],
@@ -55,11 +49,14 @@
 						'last_activity' 	=> $currentTime
 					]
 				);
-				echo constant('AMR_LOGGED_IN');
+				echo $amrLoggedIn;
 			}
 		}
 		// If passwords don't match, throw error.
-		else echo constant('AMR_WRONG_PASSWORD');
+		else {
+			echo $amrWrongPassword;
+		}
+	} else {
+		echo $amrUserNotFound;
 	}
-	else echo constant('AMR_USER_NOT_FOUND');
 ?>

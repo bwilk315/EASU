@@ -1,41 +1,44 @@
 <?php
-	/*
-		UPDATE-ACTIVITY.PHP:
-		Lengthens the lease time of this connection by update interval.
-		If not called every update-interval value, connection gets outdated and
-		could be removed when some user will perform connection-checking related action.
-	*/
 	require 'local/db-access.php';
-
-	$userName = $_GET['username'];
+	$userName = $_POST['userName'];
 	// Get id of the user called 'username'.
-	$userQuery = $database->select($usertab, ['id'], ['name' => $userName]);
+	$userQuery = $database->select(
+		$tabUsers,
+		['id'],
+		['name' => $userName]
+	);
 	// If user is found ...
-	if(count($userQuery) > 0)
+	if($userQuery)
 	{
 		$currentTime = time();
-		$uid = $userQuery[0]['id']; // Extract user id.
+		$userId = $userQuery[0]['id']; // Extract user id.
 		// Update last activity time to the current.
 		$update = $database->update(
-			$conntab, 							// TABLE
+			$tabSessions, 						// TABLE
 			['last_activity' => $currentTime], 	// VALUES
-			['user_id' 		=> $uid]			// WHERE
+			['user_id' 		=> $userId]			// WHERE
 		);
-		if($update->rowCount() > 0) {
-			echo constant('AUR_UPDATED');
+		if($update) {
+			echo $arrUpdated;
 			// Check others (we are careful).
-			$connQuery = $database->select($conntab, ['user_id', 'last_activity']);
-			foreach($connQuery as $conn) {
-				$userTime 	= $conn['last_activity'];
-				$userId 	= $conn['user_id'];
-				if($userTime + constant('UPDATE_INTERVAL') * 2.0 < $currentTime) {
-					$database->delete($conntab, ['user_id' => $userId]);
+			$sessionQuery = $database->select(
+				$tabSessions,
+				['user_id', 'last_activity']
+			);
+			foreach($sessionQuery as $session) {
+				$userLastActivity 	= $session['last_activity'];
+				$userId 			= $session['user_id'];
+				if($userLastActivity + $updateInterval * 2.0 < $currentTime) {
+					$database->delete(
+						$tabSessions,
+						['user_id' => $userId]
+					);
 				}
 			}
 		} else {
-			echo constant('AUR_FAIL');
+			echo $arrFail;
 		}
 	} else {
-		echo constant('AUR_USER_NOT_FOUND');
+		echo $arrUserNotFound;
 	}
 ?>
