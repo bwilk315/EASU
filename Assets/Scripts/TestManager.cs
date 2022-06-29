@@ -10,7 +10,9 @@ public class TestManager : EASU
     [SerializeField] TMP_InputField serverNameInput;
     [SerializeField] TMP_InputField nameInput;
     [SerializeField] TMP_InputField passwordInput;
+    [SerializeField] TMP_Text serverName;
     [SerializeField] Button connectBtn;
+    [SerializeField] Button disconnectBtn;
     [SerializeField] Button logInBtn;
     [SerializeField] Transform boardContent;
 
@@ -27,8 +29,16 @@ public class TestManager : EASU
         connectBtn.interactable = false;
         Connect(new Socket(serverNameInput.text, 8000), timeout: 4);
     }
+    public void Btn_Disconnect()
+    {
+        connectBtn.interactable = true;
+        connectPanel.SetActive(true);
+        logInPanel.SetActive(false);
+        boardPanel.SetActive(false);
+    }
     public void Btn_LogIn()
     {
+        disconnectBtn.interactable = false;
         logInBtn.interactable = false;
         LogIn(nameInput.text, passwordInput.text);
     }
@@ -42,6 +52,7 @@ public class TestManager : EASU
         if (error == null)
         {
             Debug.LogFormat("Connected to '{0}' successfuly!", socket);
+            serverName.text = socket.ToString();
             connectPanel.SetActive(false);
             logInPanel.SetActive(true);
         }
@@ -60,14 +71,17 @@ public class TestManager : EASU
         }
         else if(amr == Module.AccountManagerResponse.LOGGED_OUT)
         {
+            disconnectBtn.interactable = true;
             logInBtn.interactable = true;
             boardPanel.SetActive(false);
             logInPanel.SetActive(true);
         }
         else
         {
+            disconnectBtn.interactable = true;
             logInBtn.interactable = true;
         }
+
         // Tests ...
         switch(data)
         {

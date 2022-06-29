@@ -6,5 +6,6 @@
 	"dbPass": 				"zaq1@WSX",
 	"usersTableName": 		"users",
 	"sessionsTableName":	"sessions",
-	"updateInterval":		"1000"
+	"updateInterval":		"1000",
+	"timerInterval":		"10"
 }

@@ -1,11 +1,17 @@
 <?php
-	require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php'; // OHYEAH
+	$root = $_SERVER['DOCUMENT_ROOT'];
+	if(empty($root)) {
+		echo "Server root path is missing.";
+		return;
+	}
+	require $root . '/vendor/autoload.php';
 	use Medoo\Medoo;
 	/*** Server properties. Ones with wrong/invalid values are set after configuration decode. ***/
-	$configFile 			= $_SERVER['DOCUMENT_ROOT'] . '/easu/local/server.json';
-	$structureFile 			= $_SERVER['DOCUMENT_ROOT'] . '/easu/local/structure.json';
+	$configFile 			= $root . '/easu/local/server.json';
+	$structureFile 			= $root . '/easu/local/structure.json';
 	$database 				= null;
 	$updateInterval 		= -1.0;
+	$timerInterval 			= -1.0;
 	$tabUsers				= 'unknown';
 	$tabSessions 			= 'unknown';
 	/*** AMR (Account Manager Response) cases. ***/
@@ -35,6 +41,7 @@
 		]);
 		/*** Server properties which needs configuration data to be set. ***/
 		$updateInterval 	= (float)$conf['updateInterval'] / 1000.0;
+		$timerInterval 		= (float)$conf['timerInterval'] / 1000.0;
 		$tabUsers 			= $conf['usersTableName']; 		// Name of users table.
 		$tabSessions 		= $conf['sessionsTableName']; 	// Name of connections table.
 	}

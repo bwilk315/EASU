@@ -288,6 +288,7 @@ public abstract class EASU : MonoBehaviour
                 }
                 else
                 {
+                    EASU.socket = new Socket();
                     OnConnect(MakeError(Error.BrokenResponse,
                         "Response from 'chk-structure' module is broken."
                     ));
