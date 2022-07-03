@@ -1,12 +1,19 @@
 {
 	"local": {
-		"db-access.php":	"1.0",
-		"server.json":		"1.0",
-		"structure.json":	"1.0"
+		"composer": {
+			"composer.json":			"1.0",
+			"composer.lock":			"1.0"
+		},
+		"cron": {
+			"cron-chk-sessions.php": 	"1.0"
+		},
+		"db-access.php":				"1.0",
+		"server.json":					"1.0",
+		"structure.json":				"1.0"
 	},
-	"chk-structure.php":	"1.0",
-	"sync.php":				"1.0",
-	"log-in.php":			"1.0",
-	"log-out.php":			"1.0",
-	"upt-activity.php":		"1.0"
+	"chk-structure.php":				"1.0",
+	"sync.php":							"1.0",
+	"log-in.php":						"1.0",
+	"log-out.php":						"1.0",
+	"upt-activity.php":					"1.0"
 }

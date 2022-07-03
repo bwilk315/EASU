@@ -1,23 +1,18 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "d92e8dddd9bb15eeabddf0335c66a39d",
     "packages": [
         {
             "name": "catfan/medoo",
-            "version": "v2.1.6",
+            "version": "v2.1.7",
+            "version_normalized": "2.1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/catfan/Medoo.git",
-                "reference": "86ac2b376303f6c3c8e915be9051599b67a8a09e"
+                "reference": "74be58f80d330d1075ef3bfd0fb3d057349597ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/catfan/Medoo/zipball/86ac2b376303f6c3c8e915be9051599b67a8a09e",
-                "reference": "86ac2b376303f6c3c8e915be9051599b67a8a09e",
+                "url": "https://api.github.com/repos/catfan/Medoo/zipball/74be58f80d330d1075ef3bfd0fb3d057349597ae",
+                "reference": "74be58f80d330d1075ef3bfd0fb3d057349597ae",
                 "shasum": ""
             },
             "require": {
@@ -35,7 +30,9 @@
                 "ext-pdo_sqlite": "For SQLite database",
                 "ext-pdo_sqlsrv": "For MSSQL database on both Window/Liunx platform"
             },
+            "time": "2022-07-02T04:27:50+00:00",
             "type": "framework",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Medoo\\": "src/"
@@ -80,16 +77,9 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2022-05-10T02:47:28+00:00"
+            "install-path": "../catfan/medoo"
         }
     ],
-    "packages-dev": [],
-    "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
-    "prefer-stable": false,
-    "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "dev": true,
+    "dev-package-names": []
 }

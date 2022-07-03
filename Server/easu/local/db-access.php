@@ -1,11 +1,12 @@
 <?php
-	$root = $_SERVER['DOCUMENT_ROOT'];
-	if(empty($root)) {
-		echo "Server root path is missing.";
-		return;
+	if(empty($_SERVER['DOCUMENT_ROOT'])) {
+		$root = __DIR__ . '/../../';
+	} else {
+		$root = $_SERVER['DOCUMENT_ROOT'];
 	}
-	require $root . '/vendor/autoload.php';
+	require $root . '/easu/local/composer/vendor/autoload.php';
 	use Medoo\Medoo;
+
 	/*** Server properties. Ones with wrong/invalid values are set after configuration decode. ***/
 	$configFile 			= $root . '/easu/local/server.json';
 	$structureFile 			= $root . '/easu/local/structure.json';

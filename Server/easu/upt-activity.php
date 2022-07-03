@@ -20,21 +20,6 @@
 		);
 		if($update) {
 			echo $arrUpdated;
-			// Check others (we are careful).
-			$sessionQuery = $database->select(
-				$tabSessions,
-				['user_id', 'last_activity']
-			);
-			foreach($sessionQuery as $session) {
-				$userLastActivity 	= $session['last_activity'];
-				$userId 			= $session['user_id'];
-				if($userLastActivity + $updateInterval * 2.0 < $currentTime) {
-					$database->delete(
-						$tabSessions,
-						['user_id' => $userId]
-					);
-				}
-			}
 		} else {
 			echo $arrFail;
 		}
